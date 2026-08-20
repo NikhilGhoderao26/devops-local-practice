@@ -10,7 +10,6 @@ jobs:
     # CRUCIAL: This tells GitHub to run the tasks on your local WSL runner machine
     runs-on: self-hosted
 
-    stages:
     steps:
     - name: Checkout Application Code
       uses: actions/checkout@v4
