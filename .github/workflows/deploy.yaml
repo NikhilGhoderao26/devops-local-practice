@@ -1,0 +1,29 @@
+name: Local DevOps Practice Pipeline
+
+# Step 1: Trigger this pipeline every time someone pushes code changes
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build-and-deploy:
+    # CRUCIAL: This tells GitHub to run the tasks on your local WSL runner machine
+    runs-on: self-hosted
+
+    stages:
+    steps:
+    - name: Checkout Application Code
+      uses: actions/checkout@v4
+
+    - name: Build Web Container Image
+      run: |
+        docker build -t local-web-app:latest .
+
+    - name: Load Image Into Kind Cluster
+      run: |
+        kind load docker-image local-web-app:latest --name devops-practice
+
+    - name: Deploy Manifests to Local Kubernetes
+      run: |
+        kubectl apply -f deployment.yaml
+
